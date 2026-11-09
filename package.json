@@ -1,16 +1,69 @@
 {
   "name": "rimshot",
+  "productName": "Rimshot",
   "version": "0.1.0",
-  "description": "Rimshot: a dark, liquid-glass mini player that rolls your music on CDs around the rim of a giant wheel.",
+  "description": "A dark, liquid-glass mini player for Windows that rolls your music on CDs around the rim of a giant wheel.",
+  "author": "Jesse Verboven",
+  "license": "MIT",
+  "homepage": "https://github.com/JesseVerboven/rimshot",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/JesseVerboven/rimshot.git"
+  },
   "main": "main.js",
   "private": true,
   "scripts": {
     "start": "electron .",
-    "icon": "electron build/make-icon.js"
+    "icon": "electron build/make-icon.js",
+    "dist": "electron-builder --win nsis --x64 --publish never"
   },
-  "license": "MIT",
+  "build": {
+    "appId": "com.rimshot.player",
+    "productName": "Rimshot",
+    "copyright": "Copyright © 2026 Jesse Verboven",
+    "directories": {
+      "output": "dist",
+      "buildResources": "build"
+    },
+    "files": [
+      "main.js",
+      "preload.js",
+      "src/**",
+      "native/**",
+      "build/icon.ico",
+      "build/icon.png",
+      "LICENSE",
+      "THIRD_PARTY_NOTICES.md"
+    ],
+    "asarUnpack": [
+      "native/**"
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "build/icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Rimshot",
+      "artifactName": "Rimshot-Setup-${version}.exe",
+      "installerIcon": "build/icon.ico",
+      "uninstallerIcon": "build/icon.ico",
+      "license": "LICENSE"
+    }
+  },
   "devDependencies": {
-    "electron": "^45.2.3"
-  },
-  "productName": "Rimshot"
+    "electron": "^45.2.3",
+    "electron-builder": "^26.18.0"
+  }
 }

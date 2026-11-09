@@ -106,7 +106,9 @@ function send(channel, payload) {
 }
 
 function startBridge() {
-  const script = path.join(__dirname, 'native', 'media-bridge.ps1')
+  // In the installed app the script is unpacked next to app.asar, since
+  // PowerShell can't read files inside the archive.
+  const script = path.join(__dirname, 'native', 'media-bridge.ps1').replace(/app\.asar([\\/])/, 'app.asar.unpacked$1')
   bridge = spawn('powershell.exe', ['-NoProfile', '-NonInteractive', '-ExecutionPolicy', 'Bypass', '-File', script], {
     windowsHide: true
   })
@@ -190,7 +192,8 @@ function createWindow() {
     const devRun = process.defaultApp // launched as `electron .`
     win.setAppDetails({
       appId: APP_ID,
-      appIconPath: path.join(__dirname, 'build', 'icon.ico'),
+      // Installed: Rimshot.exe carries the icon. From source: use the .ico file.
+      appIconPath: devRun ? path.join(__dirname, 'build', 'icon.ico') : process.execPath,
       appIconIndex: 0,
       relaunchCommand: devRun ? `"${process.execPath}" "${app.getAppPath()}"` : `"${process.execPath}"`,
       relaunchDisplayName: APP_NAME
