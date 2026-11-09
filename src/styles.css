@@ -458,7 +458,14 @@ button:focus-visible,
   display: flex;
   flex-direction: column;
   gap: 10px;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+  /* The glass is painted on a canvas behind the page, so page content under
+     the menu (the panel's buttons and text) would show through it. Frost it. */
+  background: rgba(16, 16, 22, 0.32);
+  backdrop-filter: blur(22px) saturate(150%);
+  box-shadow:
+    0 20px 50px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.16),
+    inset 0 0 0 0.5px rgba(255, 255, 255, 0.08);
   /* grows out of the settings button */
   transform-origin: calc(100% - 14px) -6px;
   opacity: 0;

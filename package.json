@@ -1,7 +1,7 @@
 {
   "name": "rimshot",
   "productName": "Rimshot",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A dark, liquid-glass mini player for Windows that rolls your music on CDs around the rim of a giant wheel.",
   "author": "Jesse Verboven",
   "license": "MIT",
