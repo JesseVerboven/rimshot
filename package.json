@@ -1,0 +1,16 @@
+{
+  "name": "rimshot",
+  "version": "0.1.0",
+  "description": "Rimshot: a dark, liquid-glass mini player that rolls your music on CDs around the rim of a giant wheel.",
+  "main": "main.js",
+  "private": true,
+  "scripts": {
+    "start": "electron .",
+    "icon": "electron build/make-icon.js"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^45.2.3"
+  },
+  "productName": "Rimshot"
+}

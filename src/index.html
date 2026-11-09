@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; img-src 'self' data: blob:; script-src 'self'; style-src 'self' 'unsafe-inline'"
+    />
+    <title>Rimshot</title>
+    <link rel="icon" href="../build/icon.png" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div id="app">
+      <canvas id="scene" aria-hidden="true"></canvas>
+      <canvas id="glass" aria-hidden="true"></canvas>
+
+      <div class="ui">
+        <header class="titlebar">
+          <div class="dots">
+            <button class="dot dot-close" id="btn-close" aria-label="Close" title="Close"></button>
+            <button class="dot dot-min" id="btn-min" aria-label="Minimise" title="Minimise"></button>
+            <button class="dot dot-pin" id="btn-pin" aria-label="Keep on top" title="Keep on top" aria-pressed="false"></button>
+          </div>
+          <div class="titlebar-right">
+            <div class="source" id="source" data-glass data-radius="pill" data-tint="0.55" data-strength="0.6">
+              <span class="source-dot"></span><span id="source-label">Waiting for media</span>
+            </div>
+            <button
+              class="icon-btn"
+              id="btn-settings"
+              aria-label="Settings"
+              aria-haspopup="dialog"
+              aria-expanded="false"
+              title="Settings"
+              data-glass
+              data-radius="pill"
+              data-tint="0.55"
+              data-strength="0.6"
+            >
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M4 7h9M17 7h3M4 17h3M11 17h9" />
+                <circle cx="15" cy="7" r="2.2" />
+                <circle cx="9" cy="17" r="2.2" />
+              </svg>
+            </button>
+          </div>
+        </header>
+
+        <div class="wheel-hit" id="wheel-hit" aria-label="Album wheel. Drag sideways to skip."></div>
+
+        <section class="panel" id="panel" data-glass data-tint="0.5" data-strength="1">
+          <div class="row">
+            <div class="meta" id="meta">
+              <span class="eyebrow" id="eyebrow">Now playing</span>
+              <h1 class="title" id="title">Nothing playing</h1>
+              <div class="artist-row">
+                <canvas class="mini-art" id="mini-art" width="40" height="40"></canvas>
+                <span class="artist" id="artist">Play something in Spotify</span>
+              </div>
+            </div>
+            <div class="controls">
+              <button class="ctl" id="btn-prev" aria-label="Previous track" data-glass data-radius="pill" data-tint="0.35" data-strength="0.8">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5.5v13" /><path d="M18 6.2v11.6a.8.8 0 0 1-1.2.7L9 13a1.2 1.2 0 0 1 0-2l7.8-5.5a.8.8 0 0 1 1.2.7Z" /></svg>
+              </button>
+              <button class="ctl ctl-play" id="btn-play" aria-label="Play" data-glass data-radius="pill" data-tint="0.15" data-color="accent" data-strength="1.2">
+                <svg class="i-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.8v12.4a1 1 0 0 0 1.5.9l9.8-6.2a1 1 0 0 0 0-1.7L9.5 4.9A1 1 0 0 0 8 5.8Z" /></svg>
+                <svg class="i-pause" viewBox="0 0 24 24" aria-hidden="true"><rect x="6.5" y="5" width="3.8" height="14" rx="1.2" /><rect x="13.7" y="5" width="3.8" height="14" rx="1.2" /></svg>
+              </button>
+              <button class="ctl" id="btn-next" aria-label="Next track" data-glass data-radius="pill" data-tint="0.35" data-strength="0.8">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17 5.5v13" /><path d="M6 6.2v11.6a.8.8 0 0 0 1.2.7L15 13a1.2 1.2 0 0 0 0-2L7.2 5.5a.8.8 0 0 0-1.2.7Z" /></svg>
+              </button>
+            </div>
+          </div>
+
+          <div class="scrub" id="scrub" role="slider" aria-label="Seek" tabindex="0" aria-valuemin="0">
+            <div class="track"><div class="fill" id="fill"></div><div class="thumb" id="thumb"></div></div>
+            <div class="bubble" id="bubble">0:00</div>
+          </div>
+          <div class="times"><span id="elapsed">0:00</span><span id="remaining">-0:00</span></div>
+        </section>
+
+        <div class="toast" id="toast" role="status" data-glass data-radius="pill" data-tint="0.6" data-strength="0.6"></div>
+
+        <div class="menu" id="menu" role="dialog" aria-label="Settings" data-glass data-tint="0.62" data-strength="0.7">
+          <div class="menu-section">
+            <div class="menu-label" id="size-label">Window</div>
+            <div class="segmented" role="radiogroup" aria-labelledby="size-label">
+              <button role="radio" data-size="compact" aria-checked="false">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="5" width="12" height="14" rx="2.5" /></svg>Compact
+              </button>
+              <button role="radio" data-size="wide" aria-checked="false">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="7" width="19" height="10" rx="2.5" /></svg>Wide
+              </button>
+              <button role="radio" data-size="full" aria-checked="false">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V5h4M20 9V5h-4M4 15v4h4M20 15v4h-4" /></svg>Full screen
+              </button>
+            </div>
+          </div>
+
+          <div class="menu-section">
+            <label class="switch-row">
+              <span class="switch-text"><span>Keep on top</span><small>Stay above other windows</small></span>
+              <input type="checkbox" id="opt-ontop" />
+              <span class="switch" aria-hidden="true"></span>
+            </label>
+            <label class="switch-row">
+              <span class="switch-text"><span>Spin discs</span><small>The playing disc turns while music plays</small></span>
+              <input type="checkbox" id="opt-spin" />
+              <span class="switch" aria-hidden="true"></span>
+            </label>
+            <label class="switch-row">
+              <span class="switch-text"><span>Ambient glow</span><small>Colour the background from the cover</small></span>
+              <input type="checkbox" id="opt-glow" />
+              <span class="switch" aria-hidden="true"></span>
+            </label>
+          </div>
+
+          <div class="menu-hint">F11 full screen · Space play · ← → skip · D demo</div>
+        </div>
+      </div>
+    </div>
+
+    <script src="spring.js"></script>
+    <script src="glass.js"></script>
+    <script src="discs.js"></script>
+    <script src="sources.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
